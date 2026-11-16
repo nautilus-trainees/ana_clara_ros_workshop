@@ -13,16 +13,19 @@ services:
 
     volumes:
       - ..:/root/workshop_ws/src
+      - ${HOME}/ros2_ws:/root/ros2_ws
+      - workshop_build:/root/workshop_ws/build
+      - workshop_install:/root/workshop_ws/install
+      - workshop_log:/root/workshop_ws/log
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
 
     environment:
       - DISPLAY=${DISPLAY}
       - QT_X11_NO_MITSHM=1
       - XDG_RUNTIME_DIR=/tmp/runtime-root
-      # Um ID por computador: evita que uma dupla comande o robô da bancada vizinha
-      - ROS_DOMAIN_ID=${ROS_DOMAIN_ID:-0}
+      - ROS_DOMAIN_ID=${ROS_DOMAIN_ID:-12}
       - LIBGL_DRI3_DISABLE=1
-      # Descomente se o Gazebo abrir com tela preta (máquina sem aceleração gráfica)
+      # Ative somente se houver problemas gráficos:
       # - LIBGL_ALWAYS_SOFTWARE=1
 
     devices:
@@ -31,3 +34,8 @@ services:
     stdin_open: true
     tty: true
     privileged: true
+
+volumes:
+  workshop_build:
+  workshop_install:
+  workshop_log:
