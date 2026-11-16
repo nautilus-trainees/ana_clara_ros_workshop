@@ -33,11 +33,28 @@ def generate_launch_description():
     #   - deve ler o URDF publicado no tópico robot_description
     #   - nome do modelo: robo; altura inicial: 0.45 m
     #   Dica: ros2 run ros_gz_sim create --help
-    spawn = None
+    spawn = Node(
+        package='ros_gz_sim',
+        executable='create',
+        arguments=[
+            '-topic', 'robot_description',
+            '-name', 'robo',
+            '-z', '0.45'
+        ],
+        output='screen'
+    )
 
     # TODO 2: nó 'parameter_bridge' do pacote ros_gz_bridge.
     #   - parâmetro config_file apontando para config/bridge.yaml deste pacote (gazebo_pkg)
     #   - use_sim_time ligado, como no rsp acima
-    bridge = None
+    bridge = Node(
+        package='ros_gz_bridge',
+        executable='parameter_bridge',
+        parameters=[{
+            'config_file': os.path.join(gazebo_pkg, 'config', 'bridge.yaml'),
+            'use_sim_time': True
+        }],
+        output='screen'
+    )
 
     return LaunchDescription([gz, rsp, spawn, bridge])
